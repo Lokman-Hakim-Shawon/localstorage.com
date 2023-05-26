@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        box-sizing: border-box;
+        padding:0px;
+        margin:0px;
+    }
+    .container{
+        height:500px;
+        width:400px;
+        float:left;
+        border-radius: 20px;
+        box-shadow: 1px 1px 5px black;
+        margin:20px;
+        background-color: antiquewhite;
+    }
+    h1{
+        text-align:center;
+        padding-bottom: 20px;
+    }
+    #span{
+        padding-left:40px;
+        font-size:20px;
+        font-weight:bold;
+    }
+    .input{
+        width:300px;
+        height:35px;
+        margin-left:40px;
+        padding-left:15px;
+        font-weight:bold;
+        border-radius: 10px;
+        background-color:yellow
+    }
+    #btn{
+        height:40px;
+        width:300px;
+        margin-left:40px;
+        border-radius: 10px;
+        border:none;
+        background-color:aqua
+    }
+    #container{
+        overflow:auto ;
+        width:600px;
+    }
+
+
+
+</style>
+<body>
+    <div class="container">
+        <h1>Resitration From</h1>
+        <span id="span">First Name : </span><br>
+        <input type="text" placeholder="Enter first name" id="fname" class="input"><br><br>
+        <span id="span">Last Name : </span><br>
+        <input type="text" placeholder="Enter last name" id="lname"class="input"><br><br>
+        <span id="span">Mobile Number : </span><br>
+        <input type="number" placeholder="Enter mobile number" id="number" class="input"><br><br>
+        <span id="span">E-mail : </span><br>
+        <input type="text" placeholder="Enter email" id="email" class="input"><br><br>
+        <span id="span">Password : </span><br>
+        <input type="password" placeholder="Enter password" id="password" class="input"><br><br>
+        <button id="btn">Submit</button>
+    </div>
+    <div class="container" id="container">
+      <table border="1" style="margin-top:20px; width:600px;">
+        <thead>
+            <tr style="text-align:center">
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Mobile Number</td>
+                <td>E-mail</td>
+                <td>password</td>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <script>
+        
+        var btn=document.getElementById('btn');
+        var tbody=document.getElementById('tbody');
+        btn.addEventListener('click',function(e){
+            e.preventDefault();
+            var fname=document.getElementById('fname').value;
+        var lname=document.getElementById('lname').value;
+        var mobile_number=document.getElementById('number').value;
+        var email=document.getElementById('email').value;
+        var password=document.getElementById('password').value;
+            if(fname==''&& lname==''&&email=='' && mobile_number=='' && password==''){
+                alert('input box is empty');
+            }
+            else{
+                if(localStorage.getItem('data')==null){
+                    localStorage.setItem('data','[]');
+                }
+                var file={
+                    fname : fname,
+                    lname : lname,
+                    number : mobile_number,
+                    email : email,
+                    password : password
+                }
+                var old_data=JSON.parse(localStorage.getItem('data'));
+                old_data.push(file);
+                localStorage.setItem('data',JSON.stringify(old_data));
+            }  
+            document.getElementById('fname').value='';
+            document.getElementById('lname').value='';
+            document.getElementById('number').value='';
+            document.getElementById('email').value='';
+            document.getElementById('password').value='';
+            view();
+        })
+        view();
+         
+        function view(){
+            var get=JSON.parse(localStorage.getItem('data'));
+            var html='';
+            get.forEach(function(list){
+                html+=`<tr>
+                    <td>${list.fname}</td>
+                    <td>${list.lname}</td>
+                    <td>${list.number}</td>
+                    <td>${list.email}</td>
+                    <td>${list.password}</td>
+                </tr>`
+            })
+            tbody.innerHTML=html;
+        }
+    </script>
+</body>
+</html>
